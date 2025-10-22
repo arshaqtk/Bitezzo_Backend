@@ -9,25 +9,30 @@ require("dotenv").config();
 
 app.use(express.json())
 app.use(cookieParser())
+app.use(cors({
+  origin: "http://localhost:5173", 
+  credentials: true
+}));
 
 
-const authRouter=require("./routes/auth");
-const userRouter=require("./routes/user");
+const authRouter=require("./routes/authRoutes");
+const userRouter=require("./routes/userRoutes");
+const productRouter=require("./routes/productRoutes");
+const cartRouter=require("./routes/cartRoute")
+const wishlsitRouter=require("./routes/wishlistRoutes")
+
+
 
 
 
 app.use("/auth",authRouter)
 app.use("/user",userRouter)
+app.use("/products",productRouter)
+app.use("/cart",cartRouter)
+app.use("/wishlist",wishlsitRouter)
 
 
-
-// app.get("/",async(req,res)=>{
-//   try{
-//     const users=await User.find()
-//     res.send(users)
-//   }catch(err){}
-// })
-
+ 
 
 connectDB().then(()=>{
   console.log("Database Connection established....");
@@ -35,4 +40,4 @@ connectDB().then(()=>{
 }).catch((err)=>{
   console.log("Database cannot be connected!!",err)
 });
-
+  
