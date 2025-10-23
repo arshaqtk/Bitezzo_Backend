@@ -17,9 +17,11 @@ app.use(cors({
 
 const authRouter=require("./routes/authRoutes");
 const userRouter=require("./routes/userRoutes");
-const productRouter=require("./routes/productRoutes");
+const productRouter=require("./routes/productRoutes"); 
 const cartRouter=require("./routes/cartRoute")
 const wishlsitRouter=require("./routes/wishlistRoutes")
+const orderRouter=require("./routes/orderRoutes") 
+
 
 
 
@@ -30,6 +32,8 @@ app.use("/user",userRouter)
 app.use("/products",productRouter)
 app.use("/cart",cartRouter)
 app.use("/wishlist",wishlsitRouter)
+app.use("/order",orderRouter)
+
 
 
  

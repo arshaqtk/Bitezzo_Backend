@@ -10,7 +10,7 @@ const orderSchema = new Schema(
     },
     items: [
       {
-        productId: {
+        product: {
           type: Schema.Types.ObjectId,
           ref: "Product", 
           required: true,
@@ -41,6 +41,18 @@ const orderSchema = new Schema(
       type: String,
       enum: ["COD", "Razorpay"],
       required: true,
+    },
+    deliverySpeed:{
+      type:String,
+      enum:["regular","express","fastest"],
+      required:true
+    },
+     address: {
+      name: { type: String, required: true },
+      phone: { type: String, required: true },
+      street: { type: String, required: true },
+      city: { type: String, required: true },
+      pincode: { type: String, required: true },
     },
   },
   { timestamps: true } 
