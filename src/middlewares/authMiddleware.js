@@ -3,10 +3,12 @@ const User = require("../models/user");
 
 const tokenAuthentication = async (req, res, next) => {
   try {
-    const { token } = req.cookies; 
-
+     const authHeader = req.headers["authorization"];
+    
+  const token = authHeader && authHeader.split(" ")[1];
+ 
     if (!token) {
-      return res.status(401).json({ message: "No token found" });
+      return res.status(401).json({ message: "Access Denied" });
     }
 
     const decodedJwt = jwt.verify(token, process.env.JWT_SECRET);
@@ -18,5 +20,5 @@ const tokenAuthentication = async (req, res, next) => {
     res.status(401).json({ message: "Invalid or expired token" });
   }
 };
-
-module.exports = tokenAuthentication;
+ 
+module.exports = tokenAuthentication;  

@@ -3,9 +3,11 @@ const router = express.Router();
 const { signupValidator } = require("../middlewares/validation")
 
 
-const { signup, login } = require("../controllers/authController");
+const { signup, login, refreshToken } = require("../controllers/authController");
 router.post("/signup",signupValidator,signup);
-router.post("/login", login);
+router.post("/login", login)
+router.post("/refresh", refreshToken);
+
 
 
 

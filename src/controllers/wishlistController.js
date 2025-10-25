@@ -35,7 +35,7 @@ exports.addToWishlist = async (req, res) => {
         );
 
         return res.status(200).json({
-            message: "Product  to wishlist successfully",
+            message: "Product added to wishlist successfully",
             wishlist: updatedWishlist
         });
 
@@ -52,9 +52,9 @@ exports.getWishListItems = async (req, res) => {
             path: "items.product",
             select: "name price images category description"
         });
-
-        if (!wishlist) {
-            return res.status(404).json({ message: "Wishlist not found" });
+        
+        if (wishlist.length==0) {
+            return res.status(404).json({ message: "No items  found" });
         }
         const wishlistProducts = wishlist[0].items
         

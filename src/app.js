@@ -10,7 +10,7 @@ require("dotenv").config();
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-  origin: "http://localhost:5173", 
+  origin: "http://localhost:5174", 
   credentials: true
 }));
 
@@ -20,11 +20,11 @@ const userRouter=require("./routes/userRoutes");
 const productRouter=require("./routes/productRoutes"); 
 const cartRouter=require("./routes/cartRoute")
 const wishlsitRouter=require("./routes/wishlistRoutes")
-const orderRouter=require("./routes/orderRoutes") 
+const orderRouter=require("./routes/orderRoutes")  
 
 
 
-
+ 
 
 
 app.use("/auth",authRouter)
