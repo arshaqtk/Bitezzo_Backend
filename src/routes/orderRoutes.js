@@ -3,13 +3,14 @@ const router = express.Router();
 
 const {addDirectOrder, addCartOrder, getOrderByUser, cancelOrderByUser}=require("../controllers/orderController");
 const tokenAuthentication = require("../middlewares/authMiddleware");
+const asyncHandler = require("../utils/asyncHandler");
 
 
 // router.get("/",tokenAuthentication,getCartItems)
-router.post("/direct",tokenAuthentication,addDirectOrder)
-router.post("/from-cart",tokenAuthentication,addCartOrder)
-router.get("/my",tokenAuthentication,getOrderByUser)
-router.patch("/:id/cancel",tokenAuthentication,cancelOrderByUser)
+router.post("/direct",tokenAuthentication,asyncHandler(addDirectOrder))
+router.post("/from-cart",tokenAuthentication,asyncHandler(addCartOrder))
+router.get("/my",tokenAuthentication,asyncHandler(getOrderByUser))
+router.patch("/:id/cancel",tokenAuthentication,asyncHandler(cancelOrderByUser))
 
 
 

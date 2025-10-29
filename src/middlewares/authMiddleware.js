@@ -6,7 +6,7 @@ const tokenAuthentication = async (req, res, next) => {
      const authHeader = req.headers["authorization"];
     
   const token = authHeader && authHeader.split(" ")[1];
- 
+
     if (!token) {
       return res.status(401).json({ message: "Access Denied" });
     }
@@ -14,11 +14,11 @@ const tokenAuthentication = async (req, res, next) => {
     const decodedJwt = jwt.verify(token, process.env.JWT_SECRET);
     const {_id}= decodedJwt
     req.userId = _id; 
- 
+ console.log(_id)
     next();
   } catch (err) {
     res.status(401).json({ message: "Invalid or expired token" });
   }
-};
- 
+}; 
+  
 module.exports = tokenAuthentication;  

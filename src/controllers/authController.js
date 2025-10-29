@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt")
 const jwt=require("jsonwebtoken")
 
 exports.refreshToken=async(req,res)=>{
-  try{
+
   const refreshToken=req.cookies.refreshToken
   if(!refreshToken) return res.sendStatus(401).json({ message: "Refresh token not found" })
 
@@ -12,27 +12,22 @@ exports.refreshToken=async(req,res)=>{
 
      const newAccessToken=jwt.sign({_id:decoded._id},process.env.JWT_SECRET,{expiresIn:"1d"})
 
-     res.json({accessToken:newAccessToken})
-  })}catch(err){
-     res.status(400).json({ message: err.message });
-  }
+    return  res.json({accessToken:newAccessToken})
+  })
 }
 
 exports.signup= async (req, res) => {
-    try {
+    
         const { name, email, password } = req.body
         const HashedPassword = await bcrypt.hash(password, 10)
-        const user = new User({ username:name, email, password: HashedPassword });
+        const user = new User({ name:name, email, password: HashedPassword });
         await user.save();
         res.status(201).json(user);
-    } catch (err) {
-         console.error("Signup Error:", err);
-        res.status(400).json({ message: err.message });
-    }
+    
 }
 
 exports.login= async (req, res) => {
-  try {
+  
     const { email, password } = req.body;
     const user = await User.findOne({ email });
 
@@ -67,12 +62,10 @@ exports.login= async (req, res) => {
       accessToken,
       user: {
         id: user._id,
-        username: user.username, 
+        name: user.name, 
         email: user.email,
-        isAuthenticated:user.isAuthenticated
+        isAuthenticated:user.isAuthenticated,
+        isAdmin:user.isAdmin
       }
     });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
 }

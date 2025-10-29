@@ -6,7 +6,7 @@ exports.addToWishlist = async (req, res) => {
 
     const { productId } = req.body
     const userId = req.userId
-    try {
+   
         
         const wishlist = await Wishlist.findOne({ wishlistBy: userId });
         const wishlistId = wishlist?._id
@@ -39,14 +39,12 @@ exports.addToWishlist = async (req, res) => {
             wishlist: updatedWishlist
         });
 
-    } catch (err) {
-        res.status(400).json({ message: err.message })
-    }
+   
 }
 
 
 exports.getWishListItems = async (req, res) => {
-    try {
+   
         const userId = req.userId;
         const wishlist = await Wishlist.find({ wishlistBy: userId }).populate({
             path: "items.product",
@@ -59,13 +57,11 @@ exports.getWishListItems = async (req, res) => {
         const wishlistProducts = wishlist[0].items
         
         res.status(200).json({ wishlist: wishlistProducts });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
+   
 };
 
 exports.updateWishlist = async (req, res) => {
-    try {
+   
     
         const {productId}=req.body
         const userId=req.userId
@@ -76,5 +72,5 @@ exports.updateWishlist = async (req, res) => {
         
         const wishlistProducts = updatedWishlist.items
          res.status(200).json({ message:"Product Removed",wishlist: wishlistProducts });
-    } catch (err) { res.status(500).json({ message: err.message }); }
+   
 } 

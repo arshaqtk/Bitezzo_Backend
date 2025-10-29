@@ -10,7 +10,7 @@ require("dotenv").config();
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-  origin: "http://localhost:5174", 
+  origin: "http://localhost:5173", 
   credentials: true
 }));
 
@@ -21,6 +21,8 @@ const productRouter=require("./routes/productRoutes");
 const cartRouter=require("./routes/cartRoute")
 const wishlsitRouter=require("./routes/wishlistRoutes")
 const orderRouter=require("./routes/orderRoutes")  
+const adminRouter=require("./routes/adminRoutes")  
+
 
 
 
@@ -33,7 +35,15 @@ app.use("/products",productRouter)
 app.use("/cart",cartRouter)
 app.use("/wishlist",wishlsitRouter)
 app.use("/order",orderRouter)
-
+app.use('/admin',adminRouter)
+  
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.statusCode || 500).json({ 
+    success: false,
+    message: err.message || "Internal Server Error",
+  }); 
+});
 
 
  
