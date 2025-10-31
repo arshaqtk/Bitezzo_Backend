@@ -1,6 +1,6 @@
 const Product = require("../models/product");
 
-exports.getAllProducts = async (req, res) => {
+exports.getAllProducts = async (req, res) => { 
 
    const page = parseInt(req.query.page) || 1;   
     const limit = parseInt(req.query.limit) || 10
