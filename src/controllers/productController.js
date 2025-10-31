@@ -2,8 +2,17 @@ const Product = require("../models/product");
 
 exports.getAllProducts = async (req, res) => {
 
-  const products = await Product.find();
-  res.json(products);
+   const page = parseInt(req.query.page) || 1;   
+    const limit = parseInt(req.query.limit) || 10
+
+    const skip = (page - 1) * limit
+
+  const products = await Product.find({isActive:true}) .skip(skip).limit(limit);
+
+  const total = await Product.countDocuments()
+
+
+ res.json({total,page,totalPages: Math.ceil(total / limit),products});
 
 };
 
@@ -15,13 +24,13 @@ exports.getProductById = async (req, res) => {
 
 };
 
-exports.addProduct = async (req, res) => {
+// exports.addProduct = async (req, res) => {
 
-  const product = new Product(req.body);
-  await product.save();
-  res.status(201).json({ message: "Product added successfully" });
+//   const product = new Product(req.body);
+//   await product.save();
+//   res.status(201).json({ message: "Product added successfully" });
 
-};
+// };
 
 
 exports.filterProduct = async (req, res) => {

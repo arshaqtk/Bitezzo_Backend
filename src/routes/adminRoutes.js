@@ -5,7 +5,9 @@ const tokenAuthentication = require("../middlewares/authMiddleware");
 const asyncHandler = require("../utils/asyncHandler");
 const { dashboardStats } = require("../controllers/admin/adminDashboardController");
 const { adminViewUsers, toggleUserAuthentication, getUserById, getUserOrders, getUserCart } = require("../controllers/admin/adminUserController");
-const { getAllProducts } = require("../controllers/admin/adminProductController");
+const { getAllProducts, softDeleteProduct, addProduct, editProduct } = require("../controllers/admin/adminProductController");
+const { getAllOrders, getOrderById, updateOrderStatus } = require("../controllers/admin/adminOrderController");
+const {uploadProduct} = require("../middlewares/upload");
 
 router.get("/dashboard",tokenAuthentication,asyncHandler(dashboardStats))
 router.get("/users",tokenAuthentication,asyncHandler(adminViewUsers))
@@ -14,10 +16,23 @@ router.get("/users/:_id",tokenAuthentication,asyncHandler(getUserById))
 router.get("/users/:_id/order",tokenAuthentication,asyncHandler(getUserOrders))
 router.get("/users/:_id/cart",tokenAuthentication,asyncHandler(getUserCart))
 
-router.get("/product",tokenAuthentication,asyncHandler(getAllProducts))
+router.get("/products",tokenAuthentication,asyncHandler(getAllProducts))
+router.patch("/products/:_id/soft-delete",tokenAuthentication,asyncHandler(softDeleteProduct))
+router.post("/products/add-product",tokenAuthentication,uploadProduct.array('images',5),asyncHandler(addProduct))
+router.put("/products/:_id/edit-product",tokenAuthentication,uploadProduct.array('images',5),asyncHandler(editProduct))
+
+
+
+router.get("/orders",tokenAuthentication,asyncHandler(getAllOrders))
+router.get("/orders/:_id",tokenAuthentication,asyncHandler(getOrderById))
+router.patch("/orders/:_id/status",tokenAuthentication,asyncHandler(updateOrderStatus))
+
+ 
+
 
 
 
  
+   
 
 module.exports = router; 

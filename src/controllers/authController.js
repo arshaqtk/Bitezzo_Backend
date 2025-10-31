@@ -22,7 +22,7 @@ exports.signup= async (req, res) => {
         const HashedPassword = await bcrypt.hash(password, 10)
         const user = new User({ name:name, email, password: HashedPassword });
         await user.save();
-        res.status(201).json(user);
+        return res.status(201).json(user);
     
 }
 
@@ -57,13 +57,13 @@ exports.login= async (req, res) => {
     res.cookie("refreshToken", refreshToken, { httpOnly: true,
        sameSite: "lax" });
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "User logged in successfully",
       accessToken,
       user: {
         id: user._id,
         name: user.name, 
-        email: user.email,
+        email: user.email, 
         isAuthenticated:user.isAuthenticated,
         isAdmin:user.isAdmin
       }

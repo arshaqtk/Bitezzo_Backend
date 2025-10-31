@@ -7,7 +7,7 @@ const asyncHandler = require("../utils/asyncHandler");
 
 router.get("/",asyncHandler(getAllProducts))
 router.get("/:id",asyncHandler(getProductById))
-router.post("/add",(addProduct))
+// router.post("/add",(addProduct))
 router.get("/category/:category",asyncHandler(filterProduct))
 
 module.exports=router

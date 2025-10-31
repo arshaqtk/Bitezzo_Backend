@@ -14,7 +14,7 @@ exports.dashboardStats = async (req, res) => {
         { $sort: { Orders: -1 } },
         { $limit: 5 },
         { $lookup: { from: "users", localField: "_id", foreignField: "_id", as: "user" } },
-        { $unwind: "$user" },
+        { $unwind: "$user"},
         { $project: { name: "$user.name", orders: 1 } }
     ])
 

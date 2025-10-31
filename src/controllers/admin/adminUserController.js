@@ -34,17 +34,6 @@ exports.getUserById = async (req, res) => {
     return res.status(200).json({ success: true, user })
 }
 
-exports.getUserById = async (req, res) => {
-    const userId = req.params
-
-    const user = await User.findById(userId).select("-password -refreshToken")
-    if (!user) {
-        return res.status(400).json({ message: "User is not found" })
-    }
-    console.log(user)
-    return res.status(200).json({ success: true, user })
-}
-
 exports.getUserCart  = async (req, res) => {
     const userId = req.params
 
