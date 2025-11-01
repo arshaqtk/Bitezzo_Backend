@@ -18,10 +18,22 @@ exports.getOrderById=async(req,res)=>{
 exports.updateOrderStatus=async(req,res)=>{
     const orderId=req.params
     const {status}=req.body
-
-    const orders=await Order.findByIdAndUpdate(orderId,{status:status},{new:true,runValidators: true})
-    if(!orders){
-         return res.status(400).json({success:false,message:`Order status not Updated as ${status}` })
+    console.log(orderId)
+    
+    const updatedOrder=await Order.findByIdAndUpdate(orderId,{status:status},{new:true,runValidators: true})
+    if(!updatedOrder){
+        return res.status(400).json({success:false,message:`Order status not Updated as ${status}` })
     }
-    return res.status(200).json({success:true,message:`Order status Updated as ${status}`,orders })
+    const io = req.app.get("io");
+    const userId=updatedOrder.orderBy
+    console.log(userId)
+ const socketId = onlineUsers[userId];
+    if (socketId) {
+         io.to(socketId).emit("orderStatusUpdated", {
+        orderId: updatedOrder._id,
+        newStatus: updatedOrder.status,
+        message: `Your order status has been updated to ${updatedOrder.status}`,
+         });
+    }
+    return res.status(200).json({success:true,message:`Order status Updated as ${status}`,updatedOrder })
 }  

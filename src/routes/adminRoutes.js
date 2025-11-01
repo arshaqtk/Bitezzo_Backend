@@ -10,24 +10,25 @@ const { getAllProducts, softDeleteProduct, addProduct, editProduct } = require("
 const { getAllOrders, getOrderById, updateOrderStatus } = require("../controllers/admin/adminOrderController");
 const {uploadProduct} = require("../middlewares/upload");
 const { productSchema } = require("../validators/productValidator");
+const isAdmin = require("../middlewares/AdminAuthenticationMiddleware");
 
-router.get("/dashboard",tokenAuthentication,asyncHandler(dashboardStats))
-router.get("/users",tokenAuthentication,asyncHandler(adminViewUsers))
-router.patch("/users/toggle-block",tokenAuthentication,asyncHandler(toggleUserAuthentication))
-router.get("/users/:_id",tokenAuthentication,asyncHandler(getUserById)) 
-router.get("/users/:_id/order",tokenAuthentication,asyncHandler(getUserOrders)) 
-router.get("/users/:_id/cart",tokenAuthentication,asyncHandler(getUserCart))
+router.get("/dashboard",tokenAuthentication,isAdmin, asyncHandler(dashboardStats))
+router.get("/users",tokenAuthentication,isAdmin,asyncHandler(adminViewUsers))
+router.patch("/users/toggle-block",tokenAuthentication,isAdmin,asyncHandler(toggleUserAuthentication))
+router.get("/users/:_id",tokenAuthentication,isAdmin,asyncHandler(getUserById)) 
+router.get("/users/:_id/order",tokenAuthentication,isAdmin,asyncHandler(getUserOrders)) 
+router.get("/users/:_id/cart",tokenAuthentication,isAdmin,asyncHandler(getUserCart))
 
-router.get("/products",tokenAuthentication,asyncHandler(getAllProducts))
-router.patch("/products/:_id/soft-delete",tokenAuthentication,asyncHandler(softDeleteProduct))
-router.post("/products/add-product",tokenAuthentication,uploadProduct.array('images',5),validator(productSchema),asyncHandler(addProduct))
-router.put("/products/:_id/edit-product",tokenAuthentication,uploadProduct.array('images',5),asyncHandler(editProduct))
+router.get("/products",tokenAuthentication,isAdmin,asyncHandler(getAllProducts))
+router.patch("/products/:_id/soft-delete",tokenAuthentication,isAdmin,asyncHandler(softDeleteProduct))
+router.post("/products/add-product",tokenAuthentication,uploadProduct.array('images',5),validator(productSchema),isAdmin,asyncHandler(addProduct))
+router.put("/products/:_id/edit-product",tokenAuthentication,uploadProduct.array('images',5),isAdmin,asyncHandler(editProduct))
 
 
 
-router.get("/orders",tokenAuthentication,asyncHandler(getAllOrders))
-router.get("/orders/:_id",tokenAuthentication,asyncHandler(getOrderById))
-router.patch("/orders/:_id/status",tokenAuthentication,asyncHandler(updateOrderStatus))
+router.get("/orders",tokenAuthentication,isAdmin,asyncHandler(getAllOrders))
+router.get("/orders/:_id",tokenAuthentication,isAdmin,asyncHandler(getOrderById))
+router.patch("/orders/:_id/status",tokenAuthentication,isAdmin,asyncHandler(updateOrderStatus))
 
  
 

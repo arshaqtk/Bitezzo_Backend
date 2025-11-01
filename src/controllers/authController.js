@@ -40,16 +40,21 @@ exports.login= async (req, res) => {
       return res.status(401).json({ message: "Invalid Credentials" });
     }
 
-    const accessToken = jwt.sign(
-      { _id: user._id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+    if(!user.isAuthenticated){
+      return res.status(401).json({ message: "You have been blocked by admin" });
+    }
+const accessToken = jwt.sign(
+  { _id: user._id, isAdmin: user.isAdmin },
+  process.env.JWT_SECRET,
+  { expiresIn: "15m" }
+);
 
-    const refreshToken= jwt.sign(
-      {_id:user._id,email:user.email},
-    process.env.REFRESH_TOKEN_SECRET,
-  {expiresIn:"14d"})
+const refreshToken = jwt.sign(
+  { _id: user._id },
+  process.env.REFRESH_TOKEN_SECRET,
+  { expiresIn: "14d" }
+);
+
 
   user.refreshToken=refreshToken
   await user.save()
@@ -65,7 +70,7 @@ exports.login= async (req, res) => {
         name: user.name, 
         email: user.email, 
         isAuthenticated:user.isAuthenticated,
-        isAdmin:user.isAdmin
+        isAdmin:user.isAdmin 
       }
     });
 }

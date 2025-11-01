@@ -17,6 +17,16 @@ exports.toggleUserAuthentication = async (req, res) => {
     }
     user.isAuthenticated = !user.isAuthenticated;
     await user.save();
+
+
+    const io = req.app.get("io");
+    const socketId = onlineUsers[userId];
+    if (socketId) {
+        console.log("Blocked",socketId)
+        io.to(socketId).emit("userBlocked", { message: "Your account has been blocked" });
+    }
+
+
     const message = user.isAuthenticated
         ? "User unblocked successfully"
         : "User blocked successfully";
@@ -30,11 +40,11 @@ exports.getUserById = async (req, res) => {
     if (!user) {
         return res.status(400).json({ message: "User is not found" })
     }
-  
+
     return res.status(200).json({ success: true, user })
 }
 
-exports.getUserCart  = async (req, res) => {
+exports.getUserCart = async (req, res) => {
     const userId = req.params
 
     const cart = await Cart.findOne({ cartBy: userId }).populate('items.product');
@@ -45,9 +55,9 @@ exports.getUserCart  = async (req, res) => {
     return res.status(200).json({ success: true, cart })
 }
 
-exports.getUserOrders  = async (req, res) => {
+exports.getUserOrders = async (req, res) => {
     const userId = req.params
-    const order = await Orders.find({orderBy:userId}).limit(5).sort({createdAt:-1})
+    const order = await Orders.find({ orderBy: userId }).limit(5).sort({ createdAt: -1 })
     if (!order) {
         return res.status(400).json({ message: "No data   found" })
     }

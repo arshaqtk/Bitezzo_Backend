@@ -5,7 +5,7 @@ const Wishlist = require("../models/wishlist")
 exports.addToWishlist = async (req, res) => {
 
     const { productId } = req.body
-    const userId = req.userId
+    const userId = req.user._id
    
         
         const wishlist = await Wishlist.findOne({ wishlistBy: userId });
@@ -45,7 +45,7 @@ exports.addToWishlist = async (req, res) => {
 
 exports.getWishListItems = async (req, res) => {
    
-        const userId = req.userId;
+        const userId = req.user._id;
         const wishlist = await Wishlist.find({ wishlistBy: userId }).populate({
             path: "items.product",
             select: "name price images category description"
@@ -64,7 +64,7 @@ exports.updateWishlist = async (req, res) => {
    
     
         const {productId}=req.body
-        const userId=req.userId
+        const userId=req.user._id
         const updatedWishlist = await Wishlist.findOneAndUpdate(
             { wishlistBy: userId },
             { $pull: { items: { product: productId } } },{new:true}

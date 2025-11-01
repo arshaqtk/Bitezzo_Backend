@@ -5,7 +5,7 @@ const Cart = require("../models/cart")
 exports.addToCart = async (req, res) => {
 
   const { productId, price } = req.body
-  const userId = req.userId
+  const userId = req.user._id
 
 
   const cart = await Cart.findOne({ cartBy: userId });
@@ -58,7 +58,7 @@ exports.addToCart = async (req, res) => {
 
 exports.getCartItems = async (req, res) => {
 
-  const userId = req.userId;
+  const userId = req.user._id;
   const cart = await Cart.find({ cartBy: userId }).populate({
     path: "items.product",
     select: "name price images category description"
@@ -74,7 +74,7 @@ exports.getCartItems = async (req, res) => {
 
 
 exports.updateCartQuantity = async (req, res) => {
-  const userId = req.userId
+  const userId = req.user._id
   const { productId, action } = req.body
 
 
@@ -107,7 +107,7 @@ exports.updateCartQuantity = async (req, res) => {
 
 
 exports.deleteCartItem = async (req, res) => {
-  const userId = req.userId
+  const userId = req.user._id
   const { productId } = req.body
 
 

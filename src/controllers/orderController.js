@@ -3,7 +3,7 @@ const Cart = require("../models/cart")
 
 
 exports.getOrderByUser=async(req,res)=>{
-    const userId=req.userId
+    const userId=req.user._id
   
         const orders=await Order.find({orderBy:userId}).populate({
         path: "items.product",
@@ -14,7 +14,7 @@ exports.getOrderByUser=async(req,res)=>{
 }
 
 exports.addDirectOrder = async (req, res) => {
-    const userId = req.userId
+    const userId = req.user._id
     const { productId, price, quantity, address, total, deliverySpeed, paymentMethod } = req.body
    
         const order = new Order({ orderBy: userId, items: [{ product: productId, price, quantity }], total, address, deliverySpeed, paymentMethod })
@@ -25,7 +25,7 @@ exports.addDirectOrder = async (req, res) => {
 }
 
 exports.addCartOrder = async (req, res) => {
-    const userId = req.userId
+    const userId = req.user._id
     const { address, total, deliverySpeed, paymentMethod } = req.body
 
    
