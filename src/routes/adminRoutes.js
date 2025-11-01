@@ -10,7 +10,7 @@ const { getAllProducts, softDeleteProduct, addProduct, editProduct } = require("
 const { getAllOrders, getOrderById, updateOrderStatus } = require("../controllers/admin/adminOrderController");
 const {uploadProduct} = require("../middlewares/upload");
 const { productSchema } = require("../validators/productValidator");
-const isAdmin = require("../middlewares/AdminAuthenticationMiddleware");
+const isAdmin = require("../middlewares/adminAuthenticationMiddleware");
 
 router.get("/dashboard",tokenAuthentication,isAdmin, asyncHandler(dashboardStats))
 router.get("/users",tokenAuthentication,isAdmin,asyncHandler(adminViewUsers))

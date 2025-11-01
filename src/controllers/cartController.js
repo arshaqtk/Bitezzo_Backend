@@ -53,7 +53,7 @@ exports.addToCart = async (req, res) => {
   });
 
 
-}
+} 
 
 
 exports.getCartItems = async (req, res) => {
