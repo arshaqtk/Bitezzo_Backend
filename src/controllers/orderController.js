@@ -9,7 +9,7 @@ exports.getOrderByUser=async(req,res)=>{
         path: "items.product",
         select: "name price images category description"
       })
-        res.status(200).json({orders})
+       return  res.status(200).json({orders})
 
 }
 
