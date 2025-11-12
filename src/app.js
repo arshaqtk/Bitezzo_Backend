@@ -22,7 +22,7 @@ app.use(
 );
 app.use(ratelimit({
   windowMs: 15 * 60 * 1000,
-  limit:100,
+  limit:150,
   message:"Too many calls"
 }))
 
