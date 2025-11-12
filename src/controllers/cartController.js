@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const Cart = require("../models/cart")
 
 
@@ -69,8 +70,9 @@ exports.getCartItems = async (req, res) => {
   }
 
   res.status(200).json({ cart: cart });
-
 };
+
+
 
 
 exports.updateCartQuantity = async (req, res) => {

@@ -27,3 +27,10 @@ exports.userProfileStats=async(req,res)=>{
 
         return res.status(200).json({success:true,totalOrders: orderCount,favoriteItems: wishlistCount,totalSpent:totalSpent[0]?.total,loyaltyPoint})
 }
+
+exports.userNavStats=async(req,res)=>{
+        const userId=req.user._id
+        const wishlistCount=await Wishlist.countDocuments({wishlistBy:userId})
+        const cartCount=await Orders.countDocuments({cartBy:userId})
+        return res.status(200).json({success:true,wishlistCount,cartCount})
+}
