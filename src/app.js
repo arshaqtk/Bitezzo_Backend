@@ -6,6 +6,7 @@ const cors = require("cors");
 const connectDB = require("./config/database");
 require("dotenv").config();
 const ratelimit=require("express-rate-limit")
+const morgan = require('morgan')
 
 
 const app = express();
@@ -25,6 +26,7 @@ app.use(ratelimit({
   limit:150,
   message:"Too many calls"
 }))
+app.use(morgan("dev"))
 
 const io = new Server(server, {
   cors: {

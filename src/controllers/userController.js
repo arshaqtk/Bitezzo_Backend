@@ -18,7 +18,7 @@ exports.editUserProfileImage = async (req, res) => {
 
 exports.userProfileStats = async (req, res) => {
         const userId = req.user._id
-        console.log(userId)
+        
         const wishlistCount = await Wishlist.countDocuments({ wishlistBy: userId })
         const orderCount = await Orders.countDocuments({ orderBy: userId })
         const totalSpent = await Orders.aggregate([

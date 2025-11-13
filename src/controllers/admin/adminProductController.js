@@ -6,6 +6,7 @@ exports.getAllProducts =async(req,res)=>{
     return res.status(200).json({success:true,products})
 }   
 
+
 exports.softDeleteProduct=async(req,res)=>{
     const productId=req.params
 
@@ -23,6 +24,7 @@ exports.softDeleteProduct=async(req,res)=>{
 
 exports.addProduct=async(req,res)=>{
     const {name,description,price,count,category}=req.body
+
     const images=req.files.map(file=>({
         url:file.path,
         alt:file.filename,

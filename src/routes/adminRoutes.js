@@ -12,6 +12,7 @@ const {uploadProduct} = require("../middlewares/upload");
 const { productSchema } = require("../validators/productValidator");
 const isAdmin = require("../middlewares/adminAuthenticationMiddleware");
 
+
 router.get("/dashboard",tokenAuthentication,isAdmin, asyncHandler(dashboardStats))
 router.get("/users",tokenAuthentication,isAdmin,asyncHandler(adminViewUsers))
 router.patch("/users/toggle-block",tokenAuthentication,isAdmin,asyncHandler(toggleUserAuthentication))
