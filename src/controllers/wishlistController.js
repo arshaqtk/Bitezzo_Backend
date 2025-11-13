@@ -7,7 +7,7 @@ exports.addToWishlist = async (req, res) => {
     const { productId } = req.body
     const userId = req.user._id
    
-        
+       
         const wishlist = await Wishlist.findOne({ wishlistBy: userId });
         const wishlistId = wishlist?._id
        
@@ -17,7 +17,7 @@ exports.addToWishlist = async (req, res) => {
             return res.status(200).json({
                 message: "Product added to wishlist successfully",
                 wishlist: newWishlist
-            })
+            }) 
         }
 
         const existingWishlist = await Wishlist.find({
@@ -25,18 +25,32 @@ exports.addToWishlist = async (req, res) => {
             items: { $elemMatch: { product: productId } }
         })
         if (existingWishlist.length > 0) {
-            return res.status(400).json({ message: "Product already exists in the wishlist" });
+            const updatedWishlist = await Wishlist.findOneAndUpdate(
+            { wishlistBy: userId },
+            { $pull: { items: { product: productId } } },{new:true}
+        ).populate({
+            path: "items.product",
+            select: "name price images category description"
+        });
+
+            return res.status(200).json({
+            message: "Product Removed From wishlist successfully",
+            wishlist: updatedWishlist.items
+        });
         }
 
         const updatedWishlist = await Wishlist.findByIdAndUpdate(
             wishlistId,
-            { $push: { items: { product: productId } } },
+            { $push: { items: { product: productId } } }, 
             { new: true, runValidators: true }
-        );
+        ).populate({
+            path: "items.product",
+            select: "name price images category description"
+        });
 
         return res.status(200).json({
             message: "Product added to wishlist successfully",
-            wishlist: updatedWishlist
+            wishlist:  updatedWishlist.items
         });
 
    
@@ -68,7 +82,7 @@ exports.updateWishlist = async (req, res) => {
         const updatedWishlist = await Wishlist.findOneAndUpdate(
             { wishlistBy: userId },
             { $pull: { items: { product: productId } } },{new:true}
-        );
+        )
         
         const wishlistProducts = updatedWishlist.items
          res.status(200).json({ message:"Product Removed",wishlist: wishlistProducts });

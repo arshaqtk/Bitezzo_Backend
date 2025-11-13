@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt")
 const jwt=require("jsonwebtoken")
 
 exports.refreshToken=async(req,res)=>{
-
+console.log("called")
   const refreshToken=req.cookies.refreshToken
   if(!refreshToken) return res.sendStatus(401).json({ message: "Refresh token not found" })
 
@@ -11,11 +11,11 @@ exports.refreshToken=async(req,res)=>{
      if (err) return res.sendStatus(403).json({ message: "Invalid or expired refresh token" })
 
      const newAccessToken=jwt.sign({_id:decoded._id},process.env.JWT_SECRET,{expiresIn:"1d"})
-
+console.log(newAccessToken)
     return  res.json({accessToken:newAccessToken})
   })
 }
-
+ 
 exports.signup= async (req, res) => {
     
         const { name, email, password } = req.body

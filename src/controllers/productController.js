@@ -50,3 +50,15 @@ exports.filterProduct = async (req, res) => {
   }
 }
 
+exports.searchProduct = async (req, res) => {
+   const searchValue = req.query.s;
+if (!searchValue) {
+      return res.json([]); 
+    }
+
+    const products = await Product.find({
+      $text: { $search: searchValue }
+    });
+
+    res.json(products);
+};

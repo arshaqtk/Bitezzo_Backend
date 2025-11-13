@@ -31,13 +31,11 @@ exports.userProfileStats = async (req, res) => {
 
 exports.userNavStats = async (req, res) => {
         const userId = new mongoose.Types.ObjectId(req.user._id);
-        console.log(userId)
         const wishlistCount = await Wishlist.aggregate([{ $match: { wishlistBy: userId } },
         { $project: { count: { $size: "$items" } } }])
 
         const cartCount = await cart.aggregate([{ $match: { cartBy: userId } },
                 { $project: { count: { $size: "$items" } } }])
 
-        console.log(wishlistCount, cartCount)
         return res.status(200).json({ success: true, wishlistCount:wishlistCount[0].count, cartCount:cartCount[0].count })
 }
